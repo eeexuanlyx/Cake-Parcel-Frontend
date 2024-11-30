@@ -32,8 +32,10 @@ const HomePage = () => {
         handleSearch={handleSearch}
         handleFilterChange={handleFilterChange}
       />
-      <div className="bg-gray-100 min-h-screen py-8">
-        <h2 className="text-2xl font-bold text-center mb-4">Our Selections</h2>
+      <div className="bg-gray-100 min-h-screen py-0">
+        <h2 className="text-2xl font-bold font-corinthia text-center mb-4">
+          Crafted with passion, Parcelled with love
+        </h2>
 
         {isError && (
           <div>Error: {error?.message || "Failed to fetch products"}</div>

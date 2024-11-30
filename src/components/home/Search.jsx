@@ -2,13 +2,13 @@ import React from "react";
 
 const Search = (props) => {
   return (
-    <div className="container mx-auto px-4 py-4">
-      <div className="flex justify-center items-center mb-6">
+    <div className="container mx-auto px-4 py-12">
+      <div className="flex justify-center items-center mb-0">
         <input
           type="text"
           value={props.searchTerm}
           onChange={props.handleSearch}
-          placeholder="Search products..."
+          placeholder="Search for your favourite designs"
           className="w-full md:w-1/2 p-2 border rounded"
         />
 

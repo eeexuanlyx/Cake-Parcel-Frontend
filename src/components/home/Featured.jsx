@@ -30,9 +30,6 @@ const Featured = () => {
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-amber-50 drop-shadow-lg mb-4 font-cookie">
                   Featured Designs
                 </h1>
-                <p className="text-lg sm:text-xl lg:text-2xl text-amber-50 max-w-3xl mx-auto font-corinthia drop-shadow-lg">
-                  Crafted with passion, Parceled with love
-                </p>
               </div>
             </div>
           </SwiperSlide>

@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 
-const ProductCards = ({
-  id,
-  name,
-  description,
-  sizes,
-  img,
-  type,
-  flavours,
-}) => {
+const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedFlavour, setSelectedFlavour] = useState("");
 
@@ -39,7 +31,7 @@ const ProductCards = ({
       {/* Content Section */}
       <div className="flex flex-col justify-between p-4 md:w-2/3">
         <div>
-          <h2 className="text-xl font-bold mb-2">{name}</h2>
+          <h2 className="text-2xl font-cookie font-bold mb-2">{name}</h2>
           <p className="text-gray-600 mb-4">{description}</p>
 
           {/* Size Dropdown */}
