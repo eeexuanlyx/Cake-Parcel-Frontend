@@ -1,25 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import Featured from "../home/Featured";
 import ProductCards from "../home/ProductCards";
 import Footer from "../home/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../../api/api";
+import Search from "../home/Search";
 
 const HomePage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState("");
+
   const {
     data: products = [],
     isPending,
     isError,
     error,
-  } = useQuery({ queryKey: ["products"], queryFn: getProducts });
+  } = useQuery({
+    queryKey: ["products", searchTerm, filterType],
+    queryFn: () => getProducts({ search: searchTerm, type: filterType }),
+  });
+
+  const handleSearch = (e) => setSearchTerm(e.target.value);
+  const handleFilterChange = (e) => setFilterType(e.target.value);
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Featured
-        products={products}
-        isPending={isPending}
-        isError={isError}
-        error={error}
+      <Featured />
+      <Search
+        searchTerm={searchTerm}
+        filterType={filterType}
+        handleSearch={handleSearch}
+        handleFilterChange={handleFilterChange}
       />
       <div className="bg-gray-100 min-h-screen py-8">
         <h2 className="text-2xl font-bold text-center mb-4">Our Selections</h2>

@@ -51,9 +51,11 @@ export const loginUser = async (loginData) => {
   }
 };
 
-export const getProducts = async () => {
+export const getProducts = async ({ search, type }) => {
   try {
-    const response = await axiosInstance.get("/products");
+    const response = await axiosInstance.get("/products", {
+      params: { search, type },
+    });
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {
