@@ -51,4 +51,16 @@ export const loginUser = async (loginData) => {
   }
 };
 
+export const getProducts = async () => {
+  try {
+    const response = await axiosInstance.get("/products");
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
 export default apiInstance;
