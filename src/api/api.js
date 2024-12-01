@@ -89,4 +89,28 @@ export const updateProfile = async ({ email, password }) => {
   }
 };
 
+export const getAddressContact = async () => {
+  try {
+    const response = await apiInstance.get("/profile/address");
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const updateAddressContact = async (payload) => {
+  try {
+    const response = await apiInstance.post("/profile/address", payload);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
 export default apiInstance;
