@@ -113,4 +113,16 @@ export const updateAddressContact = async (payload) => {
   }
 };
 
+export const addToCart = async (cartItem) => {
+  try {
+    const response = await apiInstance.post("/cart", cartItem);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error.message || "An unexpected error occurred");
+  }
+};
+
 export default apiInstance;

@@ -1,8 +1,24 @@
 import React, { useState } from "react";
-
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { addToCart } from "../../api/api";
 const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedFlavour, setSelectedFlavour] = useState("");
+  const [showSysMsg, setShowSysMsg] = useState(false);
+
+  const {
+    mutate,
+    isLoading: isUpdating,
+    isError,
+    error: addError,
+  } = useMutation({
+    mutationFn: addToCart,
+    onSuccess: () => {
+      setShowSysMsg(true);
+      setSelectedSize("");
+      setSelectedFlavour("");
+    },
+  });
 
   const handleAddToCart = () => {
     if (!selectedSize || !selectedFlavour) {
@@ -10,13 +26,20 @@ const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
       return;
     }
 
-    console.log({
-      id,
+    const selectedPrice = sizes[selectedSize];
+    const cartItem = {
+      product_id: id,
       name,
-      selectedSize,
-      selectedFlavour,
+      selected_size: selectedSize,
+      selected_flavour: selectedFlavour,
+      quantity: 1, // default quantity
+      price: selectedPrice,
+    };
+    mutate(cartItem, {
+      onError: (addError) => {
+        alert(`Failed to add to cart: ${addError.message}`);
+      },
     });
-    alert(`${name} added to cart!`);
   };
 
   return (
@@ -70,6 +93,16 @@ const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
             ))}
           </select>
         </div>
+        {isUpdating && <p>adding to cart...</p>}
+        {showSysMsg && (
+          <div className="text-sm text-green-500 mb-4">
+            Item added successfully!
+          </div>
+        )}
+        {isError && <div className="text-sm text-red-500 mb-4">error</div>}
+        {addError && (
+          <div className="text-sm text-red-500 mb-4">{addError.message}</div>
+        )}
 
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-4"
