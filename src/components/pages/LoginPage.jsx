@@ -54,9 +54,12 @@ const Login = () => {
   return (
     <>
       {!showRegister ? (
-        <div className="container mx-auto px-4 py-8 min-h-screen">
+        <div className="container max-w-screen-lg mx-auto px-4 py-8 min-h-screen">
           <h2 className="text-2xl font-bold mb-6">Login</h2>
-          <form onSubmit={handleLogin}>
+          <form
+            className="bg-white shadow-md rounded-lg px-4 py-8 max-w-sm mx-auto mt-11"
+            onSubmit={handleLogin}
+          >
             <div className="mb-4">
               <label
                 htmlFor="email"

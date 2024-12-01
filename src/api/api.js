@@ -77,4 +77,16 @@ export const getUserProfile = async () => {
   }
 };
 
+export const updateProfile = async ({ email, password }) => {
+  try {
+    const response = await apiInstance.put("/profile", { email, password });
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
 export default apiInstance;
