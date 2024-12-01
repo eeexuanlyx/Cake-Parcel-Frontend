@@ -125,4 +125,22 @@ export const addToCart = async (cartItem) => {
   }
 };
 
+export const getCartItems = async () => {
+  try {
+    const response = await apiInstance.get("/cart");
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch cart items");
+  }
+};
+
+export const removeFromCart = async (id) => {
+  try {
+    const response = await apiInstance.delete(`/cart/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to remove cart item");
+  }
+};
+
 export default apiInstance;
