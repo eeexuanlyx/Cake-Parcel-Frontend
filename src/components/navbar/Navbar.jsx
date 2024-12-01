@@ -16,7 +16,7 @@ const Navbar = () => {
         </Link>
         <div className="hidden md:flex items-center space-x-4">
           <Link to="/about">About Us</Link>
-          <Link to="/contact">Contact</Link>
+          <Link to="/cart">Cart</Link>
           {user ? (
             <>
               {user.role === "admin" && <Link to="/admin">Admin Panel</Link>}

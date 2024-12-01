@@ -3,11 +3,11 @@ import Navbar from "./components/Navbar/Navbar";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./admin/ProtectedRoute";
 import HomePage from "./components/pages/HomePage";
-import ContactPage from "./components/Pages/ContactPage";
 import LoginPage from "./components/Pages/LoginPage";
 import AboutPage from "./components/Pages/AboutPage";
 import AdminPage from "./components/pages/AdminPage";
 import ProfilePage from "./components/pages/ProfilePage";
+import CartPage from "./components/pages/CartPage";
 import { UserProvider } from "./context/UserContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -22,7 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route
               path="/admin"

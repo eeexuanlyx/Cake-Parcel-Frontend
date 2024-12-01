@@ -1,52 +1,52 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getUserProfile, updateProfile } from "../../api/api";
+import { getAddressContact, updateAddressContact } from "../../api/api";
 import { useUserContext } from "../../context/UserContext";
-import Address from "./Address";
+import ProfilePage from "./ProfilePage";
 
-const ProfilePage = () => {
+const Address = (props) => {
   const { user } = useUserContext();
 
-  // Input states
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  // Error and message states
+  const [streetName, setStreetName] = useState("");
+  const [unitNumber, setUnitNumber] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
   const [showSysMsg, setShowSysMsg] = useState(false);
-  const [showAddress, setShowAddress] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
-  // Fetch user profile
   const {
-    data: profile = {},
+    data: addressData = {},
     isError: fetchError,
     isLoading: isFetching,
   } = useQuery({
-    queryKey: ["user"],
-    queryFn: getUserProfile,
+    queryKey: ["addressData"],
+    queryFn: getAddressContact,
     enabled: !!user,
   });
 
   useEffect(() => {
-    if (profile?.user_email) {
-      setEmail(profile.user_email);
+    if (addressData) {
+      setStreetName(addressData.street_name || "");
+      setUnitNumber(addressData.unit_number || "");
+      setPostalCode(addressData.postal_code || "");
+      setContactNumber(addressData.contact_number || "");
     }
-  }, [profile]);
+  }, [addressData]);
 
-  // Update profile mutation
   const {
     mutate,
     isLoading: isUpdating,
     error: updateError,
   } = useMutation({
-    mutationFn: updateProfile,
+    mutationFn: updateAddressContact, // Function to send updated address to the backend
     onSuccess: () => {
       setShowSysMsg(true);
-      setError("");
-      setPassword(""); // Reset password fields after successful update
-      setConfirmPassword("");
+      setStreetName("");
+      setUnitNumber("");
+      setPostalCode("");
+      setContactNumber("");
     },
   });
 
@@ -55,32 +55,17 @@ const ProfilePage = () => {
     setIsError(false);
     setError("");
 
-    // Validate inputs
-    if (!email.trim()) {
-      setIsError(true);
-      setError("Email is required.");
-      return;
-    }
-
-    if (password && password.length < 12) {
-      setIsError(true);
-      setError("Password must be at least 12 characters.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setIsError(true);
-      setError("Passwords do not match, please try again.");
-      return;
-    }
-
-    // Prepare payload
-    const payload = { email, password };
+    const payload = {
+      street_name: streetName,
+      unit_number: unitNumber,
+      postal_code: postalCode,
+      contact_number: contactNumber,
+    };
     mutate(payload);
   };
 
   const handleToggle = () => {
-    setShowAddress((prev) => !prev); // Toggle between address and profile
+    setShowProfile((prev) => !prev);
   };
 
   if (!user) {
@@ -89,21 +74,20 @@ const ProfilePage = () => {
 
   return (
     <>
-      {!showAddress ? (
+      {!showProfile ? (
         <div className=" bg-white shadow-md max-w-screen-lg rounded-lg container mx-auto mt-6 px-4 py-8 min-h-screen">
           <h2 className="text-2xl font-bold mb-6">Profile Settings</h2>
           <p className="text-gray-700 font-corinthia text-3xl">
-            Welcome, {profile.user_name}
+            Welcome, {props.user_name}
           </p>
-
           {fetchError && (
             <div className="text-sm text-red-500 mb-4">
-              Error fetching profile.
+              Error fetching Address/ Contact.
             </div>
           )}
           {showSysMsg && (
             <div className="text-sm text-green-500 mb-4">
-              Profile updated successfully!
+              Address/ Contact updated successfully!
             </div>
           )}
           {isError && <div className="text-sm text-red-500 mb-4">{error}</div>}
@@ -123,50 +107,66 @@ const ProfilePage = () => {
               <div className="space-y-6">
                 <div>
                   <label
-                    htmlFor="email"
+                    htmlFor="street_name"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Email
+                    Street Name
                   </label>
                   <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="text"
+                    id="street_name"
+                    value={streetName}
+                    onChange={(e) => setStreetName(e.target.value)}
                     className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                    placeholder="Enter new email"
+                    placeholder="Enter new street name"
                   />
                 </div>
                 <div>
                   <label
-                    htmlFor="password"
+                    htmlFor="unit_number"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Password
+                    Unit Number
                   </label>
                   <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    type="text"
+                    id="unit_number"
+                    value={unitNumber}
+                    onChange={(e) => setUnitNumber(e.target.value)}
                     className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                    placeholder="Enter new password"
+                    placeholder="Enter new unit number"
                   />
                 </div>
                 <div>
                   <label
-                    htmlFor="confirmPassword"
+                    htmlFor="postal_code"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Confirm Password
+                    Postal Code
                   </label>
                   <input
-                    type="password"
-                    id="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    type="text"
+                    id="postal_code"
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
                     className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                    placeholder="Re-enter new password"
+                    placeholder="Enter new postal code"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="contact_number"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Contact Number
+                  </label>
+                  <input
+                    type="text"
+                    id="contact_number"
+                    value={contactNumber}
+                    onChange={(e) => setContactNumber(e.target.value)}
+                    className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                    placeholder="Enter new contact number"
                   />
                 </div>
               </div>
@@ -181,13 +181,13 @@ const ProfilePage = () => {
                       : "bg-blue-500 hover:bg-blue-700 text-white"
                   }`}
                 >
-                  {isUpdating ? "Updating..." : "Update Profile"}
+                  {isUpdating ? "Updating..." : "Update Address or Contact"}
                 </button>
               </div>
             </form>
           )}
           <p className="text-center mt-3">
-            Change Address?{" "}
+            Change Account Settings?{" "}
             <span
               className="text-blue-500 cursor-pointer"
               onClick={handleToggle}
@@ -197,10 +197,10 @@ const ProfilePage = () => {
           </p>
         </div>
       ) : (
-        <Address user_name={profile.user_name} />
+        <ProfilePage />
       )}
     </>
   );
 };
 
-export default ProfilePage;
+export default Address;

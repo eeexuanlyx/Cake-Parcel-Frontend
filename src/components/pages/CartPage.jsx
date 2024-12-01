@@ -1,11 +1,11 @@
 import React from "react";
 
-const ContactPage = () => {
+const CartPage = () => {
   return (
     <div className="max-w-screen-lg mx-auto">
-      <h1>Contact Us</h1>
+      <h1>Cart</h1>
     </div>
   );
 };
 
-export default ContactPage;
+export default CartPage;
