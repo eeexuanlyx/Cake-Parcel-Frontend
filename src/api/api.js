@@ -143,4 +143,16 @@ export const removeFromCart = async (id) => {
   }
 };
 
+export const updateCartItem = async ({ id, quantity, selected_flavour }) => {
+  try {
+    const response = await apiInstance.put(`/cart/${id}`, {
+      ...(quantity !== undefined && { quantity }),
+      ...(selected_flavour !== undefined && { selected_flavour }),
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to update cart item");
+  }
+};
+
 export default apiInstance;

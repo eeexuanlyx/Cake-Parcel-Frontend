@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getCartItems, removeFromCart } from "../../api/api";
+import { getCartItems, removeFromCart, updateCartItem } from "../../api/api";
 
 const Cart = () => {
-  const [cartTotal, setCartTotal] = useState("");
+  const [cartTotal, setCartTotal] = useState(0);
   const queryClient = useQueryClient();
 
   const {
@@ -34,6 +34,22 @@ const Cart = () => {
     removeItem(id);
   };
 
+  const {
+    mutate: updateItem,
+    isLoading: isUpdating,
+    error: updateError,
+  } = useMutation({
+    mutationFn: updateCartItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["cartItems"]); // Refresh cart items
+    },
+  });
+
+  const handleUpdate = (id, field, value) => {
+    const updatePayload = { [field]: value }; // Dynamically create payload
+    updateItem({ id, ...updatePayload });
+  };
+
   useEffect(() => {
     if (cartItems.length > 0) {
       const total = cartItems.reduce(
@@ -41,10 +57,12 @@ const Cart = () => {
         0
       );
       setCartTotal(total);
+    } else {
+      setCartTotal(0);
     }
   }, [cartItems]);
 
-  if (isLoading) return <div>Loading cart items...</div>;
+  if (isLoading || isUpdating) return <div>Loading cart items...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
@@ -66,11 +84,38 @@ const Cart = () => {
                   className="w-16 h-16 object-cover rounded"
                 />
                 <div className="flex flex-col items-start ml-4">
-                  <h2 className="text-lg font-medium">{item.name}</h2>
-                  <p>
-                    {item.selected_size} - {item.selected_flavour}
-                  </p>
-                  <p>Quantity: {item.quantity}</p>
+                  <label>
+                    Flavor:
+                    <select
+                      value={item.selected_flavour}
+                      onChange={(e) =>
+                        handleUpdate(
+                          item.cart_id,
+                          "selected_flavour",
+                          e.target.value
+                        )
+                      }
+                    >
+                      <option value="Vanilla">Vanilla</option>
+                      <option value="Chocolate">Chocolate</option>
+                      <option value="Strawberry">Strawberry</option>
+                    </select>
+                  </label>
+                  <label>
+                    Quantity:
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleUpdate(
+                          item.cart_id,
+                          "quantity",
+                          Number(e.target.value)
+                        )
+                      }
+                      className="border rounded w-16 text-center"
+                    />
+                  </label>
                 </div>
                 <button
                   className="text-red-500 ml-4"
@@ -91,7 +136,7 @@ const Cart = () => {
             ))}
           </ul>
           <div className="text-right mt-4 font-bold text-xl">
-            Total: ${cartTotal}
+            Total: ${parseInt(cartTotal).toFixed(2)}
           </div>
         </>
       )}
