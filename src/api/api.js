@@ -155,4 +155,13 @@ export const updateCartItem = async ({ id, quantity, selected_flavour }) => {
   }
 };
 
+export const checkoutCart = async (checkoutData) => {
+  try {
+    const response = await apiInstance.post("/invoice/checkout", checkoutData);
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to checkout cart");
+  }
+};
+
 export default apiInstance;

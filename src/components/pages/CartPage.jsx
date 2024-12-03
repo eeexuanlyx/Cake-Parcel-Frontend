@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCartItems, removeFromCart, updateCartItem } from "../../api/api";
+import CheckoutButton from "../home/CheckoutButton";
 
 const Cart = () => {
   const [cartTotal, setCartTotal] = useState(0);
@@ -143,6 +144,7 @@ const Cart = () => {
           <div className="text-right mt-4 font-bold text-xl">
             Total: ${parseInt(cartTotal).toFixed(2)}
           </div>
+          <CheckoutButton cartItems={cartItems} />
         </>
       )}
     </div>
