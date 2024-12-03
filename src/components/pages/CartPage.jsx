@@ -83,10 +83,15 @@ const Cart = () => {
                   alt={item.name}
                   className="w-16 h-16 object-cover rounded"
                 />
+
                 <div className="flex flex-col items-start ml-4">
+                  <label>
+                    {item.name}, {item.selected_size}
+                  </label>
                   <label>
                     Flavor:
                     <select
+                      className="border rounded w-22 text-center ml-1 px-1"
                       value={item.selected_flavour}
                       onChange={(e) =>
                         handleUpdate(
@@ -101,7 +106,7 @@ const Cart = () => {
                       <option value="Strawberry">Strawberry</option>
                     </select>
                   </label>
-                  <label>
+                  <label className="flex items-center">
                     Quantity:
                     <input
                       type="number"
@@ -113,7 +118,7 @@ const Cart = () => {
                           Number(e.target.value)
                         )
                       }
-                      className="border rounded w-16 text-center"
+                      className=" ml-1 border rounded w-14 text-center"
                     />
                   </label>
                 </div>
