@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { checkoutCart } from "../../api/api";
 import { useUserContext } from "../../context/UserContext";
 
-const CheckoutButton = ({ cartItems, setCheckoutSuccess }) => {
+const CheckoutButton = ({ cartItems, setCheckoutSuccess, setInvoiceId }) => {
   const queryClient = useQueryClient();
   const { userId } = useUserContext();
   const {
@@ -19,6 +19,7 @@ const CheckoutButton = ({ cartItems, setCheckoutSuccess }) => {
       // invalidate cart query to refresh cart items
       queryClient.invalidateQueries(["cartItems"]);
       setCheckoutSuccess(true);
+      setInvoiceId(data.invoiceId);
     },
     onError: (error) => {
       console.error("Checkout failed:", error.response?.data || error.message);
@@ -52,11 +53,6 @@ const CheckoutButton = ({ cartItems, setCheckoutSuccess }) => {
       {isError && (
         <div className="text-red-500">
           Error: {error.response?.data?.error || "An error occurred"}
-        </div>
-      )}
-      {data && (
-        <div className="text-green-500">
-          Checkout successful! Invoice ID: {data.invoiceId}
         </div>
       )}
     </div>

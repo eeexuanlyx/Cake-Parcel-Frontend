@@ -7,6 +7,7 @@ const Cart = () => {
   const [cartTotal, setCartTotal] = useState(0);
   const queryClient = useQueryClient();
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const [invoiceId, setInvoiceId] = useState(null);
 
   const {
     data: cartItems = [],
@@ -59,6 +60,8 @@ const Cart = () => {
         0
       );
       setCartTotal(total);
+      setCheckoutSuccess(false);
+      setInvoiceId(null);
     } else {
       setCartTotal(0);
     }
@@ -70,6 +73,12 @@ const Cart = () => {
   return (
     <div className=" bg-white shadow-md max-w-screen-lg rounded-lg container mx-auto mt-6 px-4 py-8 min-h-screen">
       <h2 className="text-2xl font-bold mb-6">Your Cart</h2>
+      {checkoutSuccess && invoiceId && (
+        <div className="text-green-500 mt-4">
+          Checkout Successful! Your Invoice ID is: <strong>{invoiceId}</strong>
+        </div>
+      )}
+
       {cartItems.length === 0 ? (
         <div>Your cart is empty!</div>
       ) : (
@@ -148,6 +157,7 @@ const Cart = () => {
           <CheckoutButton
             cartItems={cartItems}
             setCheckoutSuccess={setCheckoutSuccess}
+            setInvoiceId={setInvoiceId}
           />
           {checkoutSuccess && (
             <div className="text-green-500 mt-4">Checkout Successful!</div>
