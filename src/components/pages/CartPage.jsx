@@ -6,6 +6,7 @@ import CheckoutButton from "../home/CheckoutButton";
 const Cart = () => {
   const [cartTotal, setCartTotal] = useState(0);
   const queryClient = useQueryClient();
+  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
   const {
     data: cartItems = [],
@@ -144,7 +145,13 @@ const Cart = () => {
           <div className="text-right mt-4 font-bold text-xl">
             Total: ${parseInt(cartTotal).toFixed(2)}
           </div>
-          <CheckoutButton cartItems={cartItems} />
+          <CheckoutButton
+            cartItems={cartItems}
+            setCheckoutSuccess={setCheckoutSuccess}
+          />
+          {checkoutSuccess && (
+            <div className="text-green-500 mt-4">Checkout Successful!</div>
+          )}
         </>
       )}
     </div>
