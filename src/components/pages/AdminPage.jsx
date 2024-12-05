@@ -1,55 +1,136 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { viewOrders } from "../../api/api";
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateOrderStatus, viewOrders } from "../../api/api";
 
 const AdminPage = () => {
+  const queryClient = useQueryClient();
+  const [showSysMsg, setShowSysMsg] = useState(false);
+
   const {
-    data: invoice = [],
+    data: invoices = [],
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["invoice"],
+    queryKey: ["invoices"],
     queryFn: viewOrders,
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  const {
+    mutate,
+    isLoading: isUpdating,
+    error: updateError,
+  } = useMutation({
+    mutationFn: updateOrderStatus,
+    onSuccess: () => {
+      setShowSysMsg(true);
+      queryClient.invalidateQueries(["invoices"]);
+    },
+  });
+
+  const handleUpdate = (invoice_id, value) => {
+    const updatePayload = { id: invoice_id, status: value };
+    mutate({ invoice_id, ...updatePayload });
+  };
+
+  // Group invoices by invoice_id
+  const groupedInvoices = invoices.reduce((acc, invoice) => {
+    if (!acc[invoice.invoice_id]) {
+      acc[invoice.invoice_id] = {
+        ...invoice,
+        products: [invoice], // Create an array of products for this invoice_id
+      };
+    } else {
+      acc[invoice.invoice_id].products.push(invoice); // Add additional products to the same invoice_id
+    }
+    return acc;
+  }, {});
+
+  const groupedInvoiceArray = Object.values(groupedInvoices);
+
+  if (isLoading || isUpdating) return <p>Loading...</p>;
   if (isError) return <p>Error: {error.message}</p>;
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Admin: Invoice Details</h1>
-      <table className="table-auto border-collapse border border-gray-300 w-full">
-        <thead>
-          <tr>
-            <th className="border px-4 py-2">Invoice ID</th>
-            <th className="border px-4 py-2">User Name</th>
-            <th className="border px-4 py-2">Address</th>
-            <th className="border px-4 py-2">Total Price</th>
-            <th className="border px-4 py-2">Products</th>
-            <th className="border px-4 py-2">Order Date</th>
-            <th className="border px-4 py-2">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {invoice.map((invoice) => (
-            <tr key={invoice.invoice_id}>
-              <td className="border px-4 py-2">{invoice.invoice_id}</td>
-              <td className="border px-4 py-2">{invoice.user_name}</td>
-              <td className="border px-4 py-2">
-                {invoice.street_name}, {invoice.unit_number},{" "}
-                {invoice.postal_code}
-              </td>
-              <td className="border px-4 py-2">{invoice.total_price}</td>
-              <td className="border px-4 py-2">
-                {`${invoice.selected_size}, ${invoice.selected_flavour} (${invoice.quantity})`}
-              </td>
-              <td className="border px-4 py-2">{invoice.order_date}</td>
-              <td className="border px-4 py-2">{invoice.status}</td>
+      {showSysMsg && (
+        <div className="text-sm text-green-500 mb-4">
+          Status updated successfully!
+        </div>
+      )}
+      {updateError && (
+        <div className="text-sm text-red-500 mb-4">Failed to update.</div>
+      )}
+      <div className=" bg-white shadow-md max-w-screen-lg rounded-lg container mx-auto mt-6 px-2 py-8 min-h-screen">
+        <h1 className="text-2xl font-bold">Customer Order Details</h1>
+        <table className="text-xs table-auto border-collapse border border-gray-300 w-full">
+          <thead>
+            <tr>
+              <th className="border px-2 py-2">Invoice ID</th>
+              <th className="border px-2 py-2">User Name</th>
+              <th className="border px-2 py-2">Address</th>
+              <th className="border px-2 py-2">Product Name</th>
+              <th className="border px-2 py-2">Size & Flavour</th>
+              <th className="border px-2 py-2">Qty</th>
+              <th className="border px-2 py-2">Order Date</th>
+              <th className="border px-2 py-2">Update Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {groupedInvoiceArray.map((group) => {
+              const { invoice_id, user_name, products } = group;
+              const {
+                street_name,
+                unit_number,
+                postal_code,
+                status,
+                order_date,
+              } = products[0]; // Assuming the same address and status for all products in the group
+
+              return (
+                <tr key={invoice_id}>
+                  <td className="border px-2 py-2">{invoice_id}</td>
+                  <td className="border px-2 py-2">{user_name}</td>
+                  <td className="border px-2 py-2">
+                    {street_name}, {unit_number}, {postal_code}
+                  </td>
+                  <td className="border px-2 py-2">
+                    {products.map((product, index) => (
+                      <div key={index}>{product.product_name}</div>
+                    ))}
+                  </td>
+                  <td className="border px-2 py-2">
+                    {products.map((product, index) => (
+                      <div key={index}>
+                        {`${product.selected_size}, ${product.selected_flavour}`}
+                      </div>
+                    ))}
+                  </td>
+                  <td className="border px-2 py-2">
+                    {products.map((product, index) => (
+                      <div key={index}>{product.quantity}</div>
+                    ))}
+                  </td>
+                  <td className="border px-2 py-2">{order_date}</td>
+                  <td className="border px-2 py-2">
+                    <select
+                      value={status}
+                      onChange={(e) => handleUpdate(invoice_id, e.target.value)}
+                      className="p-2 border rounded-md"
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Processing">Processing</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Delivered">Delivered</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

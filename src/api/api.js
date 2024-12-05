@@ -173,4 +173,16 @@ export const viewOrders = async () => {
   }
 };
 
+export const updateOrderStatus = async ({ id, status }) => {
+  try {
+    const response = await apiInstance.patch(`/admin/${id}/status`, { status });
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
 export default apiInstance;
