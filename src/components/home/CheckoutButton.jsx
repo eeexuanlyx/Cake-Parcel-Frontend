@@ -33,6 +33,8 @@ const CheckoutButton = ({ cartItems, setCheckoutSuccess, setInvoiceId }) => {
         product_id: item.product_id,
         quantity: item.quantity,
         price: parseFloat(item.price),
+        selected_size: item.selected_size,
+        selected_flavour: item.selected_flavour,
       })),
     };
     console.log(userId);
