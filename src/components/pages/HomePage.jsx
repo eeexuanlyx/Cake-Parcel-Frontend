@@ -43,7 +43,7 @@ const HomePage = () => {
         {isPending && <div>Loading...</div>}
 
         {!isPending && !isError && products.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 max-w-6xl mx-auto">
             {products.map((product) => (
               <ProductCards
                 key={product.id}

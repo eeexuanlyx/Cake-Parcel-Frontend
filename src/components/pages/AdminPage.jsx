@@ -69,8 +69,10 @@ const AdminPage = () => {
           <thead className="text-indigo-900">
             <tr>
               <th className="border px-2 py-2">Invoice ID</th>
-              <th className="border px-2 py-2">Name / Contact</th>
-              <th className="border px-2 py-2">Address</th>
+              <th className="border px-2 py-2 hidden md:table-cell">
+                Name / Contact
+              </th>
+              <th className="border px-2 py-2 hidden lg:table-cell">Address</th>
               <th className="border px-2 py-2">Product Details</th>
               <th className="border px-2 py-2">Order Date</th>
               <th className="border px-2 py-2">Update Status</th>
@@ -90,11 +92,11 @@ const AdminPage = () => {
               return (
                 <tr key={invoice_id}>
                   <td className="border px-2 py-2">{invoice_id}</td>
-                  <td className="border px-2 py-2">
+                  <td className="border px-2 py-2 hidden md:table-cell">
                     <div className="font-bold text-blue-600">{user_name}</div>
                     <div className="text-green-600">{contact_number}</div>
                   </td>
-                  <td className="border px-2 py-2">
+                  <td className="border px-2 py-2 hidden lg:table-cell">
                     {street_name}, {unit_number}, {postal_code}
                   </td>
                   <td className="border px-2 py-2">
@@ -113,12 +115,21 @@ const AdminPage = () => {
                     ))}
                   </td>
 
-                  <td className="border px-2 py-2">{order_date}</td>
+                  <td className="border px-2 py-2">
+                    {new Date(order_date).toLocaleString("en-US", {
+                      timeZone: "Asia/Singapore", // GMT+8 timezone
+                      year: "numeric",
+                      month: "short", // "short" for abbreviated month name
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </td>
                   <td className="border px-2 py-2">
                     <select
                       value={status}
                       onChange={(e) => handleUpdate(invoice_id, e.target.value)}
-                      className="p-2 border rounded-md"
+                      className="p-1 border rounded-md"
                     >
                       <option value="Pending">Pending</option>
                       <option value="Processing">Processing</option>
