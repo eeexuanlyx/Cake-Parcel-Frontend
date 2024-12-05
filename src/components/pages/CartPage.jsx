@@ -72,7 +72,7 @@ const Cart = () => {
 
   return (
     <div className=" bg-white shadow-md max-w-screen-lg rounded-lg container mx-auto mt-6 px-4 py-8 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6">Your Cart</h2>
+      <h2 className="text-indigo-900 text-2xl font-bold mb-6">Your Cart</h2>
       {checkoutSuccess && invoiceId && (
         <div className="text-green-500 mt-4">
           Checkout Successful! Your Invoice ID is: <strong>{invoiceId}</strong>

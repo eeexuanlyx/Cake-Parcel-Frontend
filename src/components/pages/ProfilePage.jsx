@@ -91,7 +91,9 @@ const ProfilePage = () => {
     <>
       {!showAddress ? (
         <div className=" bg-white shadow-md max-w-screen-lg rounded-lg container mx-auto mt-6 px-4 py-8 min-h-screen">
-          <h2 className="text-2xl font-bold mb-6">Profile Settings</h2>
+          <h2 className="text-indigo-900 text-2xl font-bold mb-6">
+            Profile Settings
+          </h2>
           <p className="text-gray-700 font-corinthia text-3xl">
             Welcome, {profile.user_name}
           </p>

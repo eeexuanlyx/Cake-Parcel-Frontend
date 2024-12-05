@@ -62,55 +62,57 @@ const AdminPage = () => {
         <div className="text-sm text-red-500 mb-4">Failed to update.</div>
       )}
       <div className=" bg-white shadow-md max-w-screen-lg rounded-lg container mx-auto mt-6 px-2 py-8 min-h-screen">
-        <h1 className="text-2xl font-bold">Customer Order Details</h1>
+        <h1 className="text-indigo-900 text-2xl font-bold mb-2">
+          Customer Order Details
+        </h1>
         <table className="text-xs table-auto border-collapse border border-gray-300 w-full">
-          <thead>
+          <thead className="text-indigo-900">
             <tr>
               <th className="border px-2 py-2">Invoice ID</th>
-              <th className="border px-2 py-2">User Name</th>
+              <th className="border px-2 py-2">Name / Contact</th>
               <th className="border px-2 py-2">Address</th>
-              <th className="border px-2 py-2">Product Name</th>
-              <th className="border px-2 py-2">Size & Flavour</th>
-              <th className="border px-2 py-2">Qty</th>
+              <th className="border px-2 py-2">Product Details</th>
               <th className="border px-2 py-2">Order Date</th>
               <th className="border px-2 py-2">Update Status</th>
             </tr>
           </thead>
           <tbody>
             {groupedInvoiceArray.map((group) => {
-              const { invoice_id, user_name, products } = group;
+              const { invoice_id, user_name, contact_number, products } = group;
               const {
                 street_name,
                 unit_number,
                 postal_code,
                 status,
                 order_date,
-              } = products[0]; // Assuming the same address and status for all products in the group
+              } = products[0];
 
               return (
                 <tr key={invoice_id}>
                   <td className="border px-2 py-2">{invoice_id}</td>
-                  <td className="border px-2 py-2">{user_name}</td>
+                  <td className="border px-2 py-2">
+                    <div className="font-bold text-blue-600">{user_name}</div>
+                    <div className="text-green-600">{contact_number}</div>
+                  </td>
                   <td className="border px-2 py-2">
                     {street_name}, {unit_number}, {postal_code}
                   </td>
                   <td className="border px-2 py-2">
                     {products.map((product, index) => (
-                      <div key={index}>{product.product_name}</div>
-                    ))}
-                  </td>
-                  <td className="border px-2 py-2">
-                    {products.map((product, index) => (
-                      <div key={index}>
-                        {`${product.selected_size}, ${product.selected_flavour}`}
+                      <div key={index} className="p-2 bg-gray-50 rounded mb-1">
+                        <div className="font-bold text-blue-600">
+                          {product.product_name}
+                        </div>
+                        <div className="text-gray-700">
+                          {`${product.selected_size}, ${product.selected_flavour}`}
+                        </div>
+                        <div className="text-green-600">
+                          Qty: {product.quantity}
+                        </div>
                       </div>
                     ))}
                   </td>
-                  <td className="border px-2 py-2">
-                    {products.map((product, index) => (
-                      <div key={index}>{product.quantity}</div>
-                    ))}
-                  </td>
+
                   <td className="border px-2 py-2">{order_date}</td>
                   <td className="border px-2 py-2">
                     <select

@@ -10,7 +10,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link
           to="/"
-          className="font-bold text-indigo-900 drop-shadow-md text-4xl font-cookie color"
+          className="font-bold text-indigo-900 drop-shadow-md text-4xl font-cookie"
         >
           Cake Parcel
         </Link>
