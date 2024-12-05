@@ -197,7 +197,7 @@ const ProfilePage = () => {
           </p>
         </div>
       ) : (
-        <Address user_name={profile.user_name} />
+        <Address name={profile.user_name} />
       )}
     </>
   );

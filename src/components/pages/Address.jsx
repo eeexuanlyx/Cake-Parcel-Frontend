@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAddressContact, updateAddressContact } from "../../api/api";
 import { useUserContext } from "../../context/UserContext";
 import ProfilePage from "./ProfilePage";
 
 const Address = (props) => {
   const { user } = useUserContext();
+  const queryClient = useQueryClient();
 
   const [streetName, setStreetName] = useState("");
   const [unitNumber, setUnitNumber] = useState("");
@@ -27,11 +28,16 @@ const Address = (props) => {
   });
 
   useEffect(() => {
+    // Invalidate cache when user changes
+    queryClient.invalidateQueries(["addressData"]);
+  }, [user, queryClient]);
+
+  useEffect(() => {
     if (addressData) {
-      setStreetName(addressData.street_name || "");
-      setUnitNumber(addressData.unit_number || "");
-      setPostalCode(addressData.postal_code || "");
-      setContactNumber(addressData.contact_number || "");
+      setStreetName((prev) => prev || addressData.street_name || "");
+      setUnitNumber((prev) => prev || addressData.unit_number || "");
+      setPostalCode((prev) => prev || addressData.postal_code || "");
+      setContactNumber((prev) => prev || addressData.contact_number || "");
     }
   }, [addressData]);
 
@@ -78,7 +84,7 @@ const Address = (props) => {
         <div className=" bg-white shadow-md max-w-screen-lg rounded-lg container mx-auto mt-6 px-4 py-8 min-h-screen">
           <h2 className="text-2xl font-bold mb-6">Profile Settings</h2>
           <p className="text-gray-700 font-corinthia text-3xl">
-            Welcome, {props.user_name}
+            Welcome, {props.name}
           </p>
           {fetchError && (
             <div className="text-sm text-red-500 mb-4">
@@ -99,6 +105,98 @@ const Address = (props) => {
 
           {isFetching ? (
             <div className="text-center">Loading profile...</div>
+          ) : fetchError || addressData === null ? (
+            <>
+              <div className="text-center text-gray-700">
+                No address or contact information found. Please fill in the form
+                to create a new record.
+              </div>
+              <form
+                className="bg-white shadow-md rounded-lg px-4 py-8 max-w-sm mx-auto mt-11"
+                onSubmit={handleSubmit}
+              >
+                <div className="space-y-6">
+                  <div>
+                    <label
+                      htmlFor="street_name"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Street Name
+                    </label>
+                    <input
+                      type="text"
+                      id="street_name"
+                      value={streetName}
+                      onChange={(e) => setStreetName(e.target.value)}
+                      className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                      placeholder="Enter new street name"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="unit_number"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Unit Number
+                    </label>
+                    <input
+                      type="text"
+                      id="unit_number"
+                      value={unitNumber}
+                      onChange={(e) => setUnitNumber(e.target.value)}
+                      className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                      placeholder="Enter new unit number"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="postal_code"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Postal Code
+                    </label>
+                    <input
+                      type="text"
+                      id="postal_code"
+                      value={postalCode}
+                      onChange={(e) => setPostalCode(e.target.value)}
+                      className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                      placeholder="Enter new postal code"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="contact_number"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Contact Number
+                    </label>
+                    <input
+                      type="text"
+                      id="contact_number"
+                      value={contactNumber}
+                      onChange={(e) => setContactNumber(e.target.value)}
+                      className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                      placeholder="Enter new contact number"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-8">
+                  <button
+                    type="submit"
+                    disabled={isUpdating}
+                    className={`w-full py-2 px-4 font-bold rounded-md ${
+                      isUpdating
+                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        : "bg-blue-500 hover:bg-blue-700 text-white"
+                    }`}
+                  >
+                    {isUpdating ? "Updating..." : "Update Address or Contact"}
+                  </button>
+                </div>
+              </form>
+            </>
           ) : (
             <form
               className="bg-white shadow-md rounded-lg px-4 py-8 max-w-sm mx-auto mt-11"

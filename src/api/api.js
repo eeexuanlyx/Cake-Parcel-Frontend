@@ -164,4 +164,13 @@ export const checkoutCart = async (checkoutData) => {
   }
 };
 
+export const viewOrders = async () => {
+  try {
+    const response = await apiInstance.get("/admin/invoices");
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch orders");
+  }
+};
+
 export default apiInstance;
