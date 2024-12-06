@@ -26,6 +26,7 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center space-x-4">
           <Link to="/about">About Us</Link>
+          <Link to="/request">Request A Cake</Link>
 
           {user ? (
             <>
@@ -50,6 +51,9 @@ const Navbar = () => {
           <div className="absolute top-16 right-4 bg-white shadow-md rounded-lg p-4 flex flex-col space-y-4 md:hidden z-50">
             <Link to="/about" onClick={() => setMenuOpen(false)}>
               About Us
+            </Link>
+            <Link to="/request" onClick={() => setMenuOpen(false)}>
+              Request A Cake
             </Link>
 
             {user ? (

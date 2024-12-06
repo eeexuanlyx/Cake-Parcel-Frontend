@@ -11,6 +11,7 @@ import CartPage from "./components/pages/CartPage";
 import { UserProvider } from "./context/UserContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MyOrders from "./components/pages/MyOrders";
+import RequestForm from "./components/Utilis/RequestForm";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/request" element={<RequestForm />} />
             <Route
               path="/cart"
               element={
