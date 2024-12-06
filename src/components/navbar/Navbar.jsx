@@ -26,10 +26,12 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center space-x-4">
           <Link to="/about">About Us</Link>
-          <Link to="/cart">Cart</Link>
+
           {user ? (
             <>
               {user.role === "admin" && <Link to="/admin">Admin Page</Link>}
+              <Link to="/cart">Cart</Link>
+              <Link to="/orders">My Orders</Link>
               <Link to="/profile">Profile</Link>
               <button
                 onClick={logout}
@@ -49,9 +51,7 @@ const Navbar = () => {
             <Link to="/about" onClick={() => setMenuOpen(false)}>
               About Us
             </Link>
-            <Link to="/cart" onClick={() => setMenuOpen(false)}>
-              Cart
-            </Link>
+
             {user ? (
               <>
                 {user.role === "admin" && (
@@ -59,6 +59,12 @@ const Navbar = () => {
                     Admin Page
                   </Link>
                 )}
+                <Link to="/cart" onClick={() => setMenuOpen(false)}>
+                  Cart
+                </Link>
+                <Link to="/orders" onClick={() => setMenuOpen(false)}>
+                  My Orders
+                </Link>
                 <Link to="/profile" onClick={() => setMenuOpen(false)}>
                   Profile
                 </Link>

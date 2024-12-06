@@ -185,4 +185,16 @@ export const updateOrderStatus = async ({ id, status }) => {
   }
 };
 
+export const getMyOrders = async () => {
+  try {
+    const response = await apiInstance.get("/invoice/my-orders");
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
 export default apiInstance;

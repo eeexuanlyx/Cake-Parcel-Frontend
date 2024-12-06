@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./components/Navbar/Navbar";
 import { Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./admin/ProtectedRoute";
+import ProtectedRoute from "./auth/ProtectedRoute";
 import HomePage from "./components/pages/HomePage";
 import LoginPage from "./components/Pages/LoginPage";
 import AboutPage from "./components/Pages/AboutPage";
@@ -10,6 +10,7 @@ import ProfilePage from "./components/pages/ProfilePage";
 import CartPage from "./components/pages/CartPage";
 import { UserProvider } from "./context/UserContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import MyOrders from "./components/pages/MyOrders";
 
 const queryClient = new QueryClient();
 
@@ -22,13 +23,28 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/cart" element={<CartPage />} />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <CartPage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/login" element={<LoginPage />} />
             <Route
               path="/admin"
               element={
                 <ProtectedRoute roleRequired="admin">
                   <AdminPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <ProtectedRoute>
+                  <MyOrders />
                 </ProtectedRoute>
               }
             />
