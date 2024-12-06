@@ -97,6 +97,7 @@ const ProfilePage = () => {
           <p className="text-gray-700 font-corinthia text-3xl">
             Welcome, {profile.user_name}
           </p>
+          <p>Update your account settings here.</p>
 
           {fetchError && (
             <div className="text-sm text-red-500 mb-4">
@@ -119,7 +120,7 @@ const ProfilePage = () => {
             <div className="text-center">Loading profile...</div>
           ) : (
             <form
-              className="bg-white shadow-md rounded-lg px-4 py-8 max-w-sm mx-auto mt-11"
+              className="bg-white shadow-md rounded-lg px-4 py-8 max-w-sm mx-auto mt-8"
               onSubmit={handleSubmit}
             >
               <div className="space-y-6">

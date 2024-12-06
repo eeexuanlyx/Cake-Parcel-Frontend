@@ -46,7 +46,9 @@ const AdminPage = () => {
     return acc;
   }, {});
 
-  const groupedInvoiceArray = Object.values(groupedInvoices);
+  const groupedInvoiceArray = Object.values(groupedInvoices).sort(
+    (a, b) => b.invoice_id - a.invoice_id
+  );
 
   if (isLoading || isUpdating) return <p>Loading...</p>;
   if (isError) return <p>Error: {error.message}</p>;
@@ -54,7 +56,7 @@ const AdminPage = () => {
   return (
     <div>
       {showSysMsg && (
-        <div className="text-sm text-green-500 mb-4">
+        <div className="text-sm text-center text-green-500 mt-2">
           Status updated successfully!
         </div>
       )}

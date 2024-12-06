@@ -86,6 +86,7 @@ const Address = (props) => {
           <p className="text-gray-700 font-corinthia text-3xl">
             Welcome, {props.name}
           </p>
+          <p>Update your address/contact info here.</p>
           {fetchError && (
             <div className="text-sm text-red-500 mb-4">
               Error fetching Address/ Contact.
@@ -112,7 +113,7 @@ const Address = (props) => {
                 to create a new record.
               </div>
               <form
-                className="bg-white shadow-md rounded-lg px-4 py-8 max-w-sm mx-auto mt-11"
+                className="bg-white shadow-md rounded-lg px-4 py-8 max-w-sm mx-auto mt-8"
                 onSubmit={handleSubmit}
               >
                 <div className="space-y-6">

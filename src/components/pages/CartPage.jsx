@@ -75,6 +75,7 @@ const Cart = () => {
       <h2 className="text-indigo-900 text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
         Your Cart
       </h2>
+      <p>Update your address before checking out.</p>
       {checkoutSuccess && invoiceId && (
         <div className="text-green-500 mt-4">
           Checkout Successful! Your Invoice ID is: <strong>{invoiceId}</strong>
