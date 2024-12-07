@@ -2,8 +2,17 @@ import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { checkoutCart } from "../../api/api";
 import { useUserContext } from "../../context/UserContext";
+import { formatISO } from "date-fns";
+import { useState } from "react";
 
 const CheckoutButton = ({ cartItems, setCheckoutSuccess, setInvoiceId }) => {
+  const [deliveryDate, setDeliveryDate] = useState(() => {
+    // Default to tomorrow's date
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return formatISO(tomorrow, { representation: "date" });
+  });
+
   const queryClient = useQueryClient();
   const { userId } = useUserContext();
   const {
@@ -36,6 +45,7 @@ const CheckoutButton = ({ cartItems, setCheckoutSuccess, setInvoiceId }) => {
         selected_size: item.selected_size,
         selected_flavour: item.selected_flavour,
       })),
+      deliveryDate,
     };
     console.log(userId);
 
@@ -45,13 +55,26 @@ const CheckoutButton = ({ cartItems, setCheckoutSuccess, setInvoiceId }) => {
 
   return (
     <div>
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-        onClick={handleClick}
-        disabled={isLoading}
-      >
-        {isLoading ? "Processing..." : "Checkout"}
-      </button>
+      <label className="block text-gray-700 font-bold mt-4">
+        Select Delivery Date:
+        <input
+          type="date"
+          value={deliveryDate}
+          onChange={(e) => setDeliveryDate(e.target.value)}
+          className="border rounded px-2 py-1 mt-2"
+          min={formatISO(new Date(), { representation: "date" })}
+        />
+      </label>
+      <div className="grid place-content-end">
+        <button
+          className="bg-blue-500 text-white px-4 py-2 mt-2 rounded "
+          onClick={handleClick}
+          disabled={isLoading}
+        >
+          {isLoading ? "Processing..." : "Checkout"}
+        </button>
+      </div>
+
       {isError && (
         <div className="text-red-500">
           Error: {error.response?.data?.error || "An error occurred"}
