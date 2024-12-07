@@ -1,11 +1,9 @@
 import React from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { checkoutCart } from "../../api/api";
 import { useUserContext } from "../../context/UserContext";
 import { formatISO } from "date-fns";
 import { useState } from "react";
 
-const CheckoutButton = ({ cartItems, setCheckoutSuccess, setInvoiceId }) => {
+const CheckoutButton = ({ cartItems }) => {
   const [deliveryDate, setDeliveryDate] = useState(() => {
     // Default to tomorrow's date
     const tomorrow = new Date();
@@ -13,46 +11,47 @@ const CheckoutButton = ({ cartItems, setCheckoutSuccess, setInvoiceId }) => {
     return formatISO(tomorrow, { representation: "date" });
   });
   const [deliverySlot, setDeliverySlot] = useState("");
-
-  const queryClient = useQueryClient();
   const { userId } = useUserContext();
-  const {
-    mutate: handleCheckout,
-    isLoading,
-    isError,
-    data,
-    error,
-  } = useMutation({
-    mutationFn: checkoutCart,
-    onSuccess: (data) => {
-      console.log("Checkout successful:", data);
-      // invalidate cart query to refresh cart items
-      queryClient.invalidateQueries(["cartItems"]);
-      setCheckoutSuccess(true);
-      setInvoiceId(data.invoiceId);
-    },
-    onError: (error) => {
-      console.error("Checkout failed:", error.response?.data || error.message);
-    },
-  });
 
-  const handleClick = () => {
-    const checkoutData = {
-      userId,
-      cartItems: cartItems.map((item) => ({
-        product_id: item.product_id,
-        quantity: item.quantity,
-        price: parseFloat(item.price),
-        selected_size: item.selected_size,
-        selected_flavour: item.selected_flavour,
-      })),
-      deliveryDate,
-      deliverySlot,
-    };
-    console.log(userId);
+  const handleClick = async () => {
+    try {
+      console.log("Sending cart items:", cartItems);
+      console.log("Sending metadata:", { userId, deliveryDate, deliverySlot });
 
-    console.log("Checkout payload:", checkoutData); // Log the payload
-    handleCheckout(checkoutData); // Trigger the mutation
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_EXPRESS_BACKEND_URL
+        }/api/create-checkout-session`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cartItems,
+            metadata: {
+              userId,
+              deliveryDate,
+              deliverySlot,
+            },
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorDetails = await response.json();
+        throw new Error(
+          `Checkout session creation failed: ${errorDetails.error}`
+        );
+      }
+
+      const { url } = await response.json();
+      console.log("Redirecting to Stripe:", url);
+      window.location.href = url;
+    } catch (error) {
+      console.error("Error initiating checkout:", error);
+      alert("There was an issue initiating the checkout. Please try again.");
+    }
   };
 
   return (
@@ -86,17 +85,10 @@ const CheckoutButton = ({ cartItems, setCheckoutSuccess, setInvoiceId }) => {
         <button
           className="bg-blue-500 text-white px-4 py-2 mt-2 rounded "
           onClick={handleClick}
-          disabled={isLoading}
         >
-          {isLoading ? "Processing..." : "Checkout"}
+          Check out
         </button>
       </div>
-
-      {isError && (
-        <div className="text-red-500">
-          Error: {error.response?.data?.error || "An error occurred"}
-        </div>
-      )}
     </div>
   );
 };

@@ -13,6 +13,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MyOrders from "./components/pages/MyOrders";
 import RequestForm from "./components/Utilis/RequestForm";
 import NotFoundPage from "./components/pages/NotFoundPage";
+import CheckoutSuccess from "./components/pages/CheckoutSuccess";
+import CheckoutFail from "./components/pages/CheckoutFail";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +62,8 @@ function App() {
               }
             />
             <Route path="*" element={<NotFoundPage />} />
+            <Route path="/checkout-success" element={<CheckoutSuccess />} />
+            <Route path="/checkout-cancel" element={<CheckoutFail />} />
           </Routes>
         </UserProvider>
       </QueryClientProvider>
