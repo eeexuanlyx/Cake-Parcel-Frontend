@@ -76,7 +76,7 @@ const AdminPage = () => {
               </th>
               <th className="border px-2 py-2 hidden lg:table-cell">Address</th>
               <th className="border px-2 py-2">Product Details</th>
-              <th className="border px-2 py-2">Order Date</th>
+              <th className="border px-2 py-2">Deliver By</th>
               <th className="border px-2 py-2">Update Status</th>
             </tr>
           </thead>
@@ -88,7 +88,8 @@ const AdminPage = () => {
                 unit_number,
                 postal_code,
                 status,
-                order_date,
+                delivery_date,
+                delivery_slot,
               } = products[0];
 
               return (
@@ -118,14 +119,13 @@ const AdminPage = () => {
                   </td>
 
                   <td className="border px-2 py-2">
-                    {new Date(order_date).toLocaleString("en-US", {
-                      timeZone: "Asia/Singapore", // GMT+8 timezone
+                    {new Date(delivery_date).toLocaleDateString("en-US", {
+                      timeZone: "Asia/Singapore",
                       year: "numeric",
-                      month: "short", // "short" for abbreviated month name
+                      month: "short",
                       day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
                     })}
+                    <p>{delivery_slot}</p>
                   </td>
                   <td className="border px-2 py-2">
                     <select

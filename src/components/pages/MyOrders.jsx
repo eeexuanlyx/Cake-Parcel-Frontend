@@ -18,7 +18,14 @@ const MyOrders = () => {
   });
 
   const groupedOrders = orders.reduce((acc, order) => {
-    const { invoice_id, order_date, status, ...productDetails } = order;
+    const {
+      invoice_id,
+      order_date,
+      delivery_date,
+      delivery_slot,
+      status,
+      ...productDetails
+    } = order;
     const existingInvoice = acc.find(
       (group) => group.invoice_id === invoice_id
     );
@@ -26,7 +33,14 @@ const MyOrders = () => {
     if (existingInvoice) {
       existingInvoice.products.push(productDetails);
     } else {
-      acc.push({ invoice_id, order_date, status, products: [productDetails] });
+      acc.push({
+        invoice_id,
+        order_date,
+        delivery_date,
+        delivery_slot,
+        status,
+        products: [productDetails],
+      });
     }
 
     return acc;
@@ -47,12 +61,20 @@ const MyOrders = () => {
               <th className="border px-2 py-2">Invoice ID</th>
               <th className="border px-2 py-2">Product Details</th>
               <th className="border px-2 py-2">Order Date</th>
+              <th className="border px-2 py-2">Deliver By</th>
               <th className="border px-2 py-2">Status</th>
             </tr>
           </thead>
           <tbody>
             {groupedOrders.map(
-              ({ invoice_id, order_date, status, products }) => (
+              ({
+                invoice_id,
+                order_date,
+                delivery_date,
+                delivery_slot,
+                status,
+                products,
+              }) => (
                 <tr key={invoice_id}>
                   <td className="border px-2 py-2">{invoice_id}</td>
                   <td className="border px-2 py-2">
@@ -78,6 +100,16 @@ const MyOrders = () => {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
+                  </td>
+                  <td className="border px-2 py-2">
+                    {delivery_date
+                      ? new Date(delivery_date).toLocaleString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })
+                      : "Pending"}
+                    <p>{delivery_slot}</p>
                   </td>
                   <td className="border px-2 py-2">{status}</td>
                 </tr>
