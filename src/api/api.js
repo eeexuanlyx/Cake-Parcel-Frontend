@@ -61,7 +61,7 @@ export const getProducts = async ({ search, type }) => {
     if (error.response && error.response.data) {
       throw new Error(error.response.data);
     }
-    throw new Error("An unexpected error occurred");
+    throw new Error("Failed to fetch products");
   }
 };
 
@@ -181,7 +181,7 @@ export const updateOrderStatus = async ({ id, status }) => {
     if (error.response && error.response.data) {
       throw new Error(error.response.data);
     }
-    throw new Error("An unexpected error occurred");
+    throw new Error("Failed to update order");
   }
 };
 
@@ -193,7 +193,19 @@ export const getMyOrders = async () => {
     if (error.response && error.response.data) {
       throw new Error(error.response.data);
     }
-    throw new Error("An unexpected error occurred");
+    throw new Error("Failed to get orders");
+  }
+};
+
+export const viewRequests = async () => {
+  try {
+    const response = await apiInstance.get("/admin/requests");
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    }
+    throw new Error("Failed to fetch requests");
   }
 };
 

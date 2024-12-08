@@ -136,7 +136,6 @@ const RequestForm = () => {
           accept="image/*"
           onChange={handleImageChange}
           className="border p-2 w-full"
-          required
         />
         <button type="submit" className="bg-blue-500 text-white p-2 rounded">
           Submit

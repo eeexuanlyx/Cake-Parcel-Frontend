@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateOrderStatus, viewOrders } from "../../api/api";
+import AdminPageRequests from "./AdminPageRequests";
 
 const AdminPage = () => {
   const queryClient = useQueryClient();
   const [showSysMsg, setShowSysMsg] = useState(false);
+  const [activeTab, setActiveTab] = useState("orders");
 
   const {
     data: invoices = [],
@@ -55,96 +57,138 @@ const AdminPage = () => {
 
   return (
     <div>
-      {showSysMsg && (
-        <div className="text-sm text-center text-green-500 mt-2">
-          Status updated successfully!
-        </div>
-      )}
-      {updateError && (
-        <div className="text-sm text-red-500 mb-4">Failed to update.</div>
-      )}
-      <div className=" bg-white shadow-md max-w-screen-lg rounded-lg container mx-auto mt-6 px-2 py-8 min-h-screen">
-        <h1 className="text-indigo-900 text-2xl font-bold mb-2">
+      <div className="flex justify-center items-center py-2 ">
+        <button
+          className={`px-4 py-2 text-sm font-medium ${
+            activeTab === "orders"
+              ? "text-indigo-600 border-b-2 border-indigo-600"
+              : "text-gray-500 hover:text-indigo-600"
+          }`}
+          onClick={() => setActiveTab("orders")}
+        >
           Customer Order Details
-        </h1>
-        <table className="text-xs table-auto border-collapse border border-gray-300 w-full">
-          <thead className="text-indigo-900">
-            <tr>
-              <th className="border px-2 py-2">Invoice ID</th>
-              <th className="border px-2 py-2 hidden md:table-cell">
-                Name / Contact
-              </th>
-              <th className="border px-2 py-2 hidden lg:table-cell">Address</th>
-              <th className="border px-2 py-2">Product Details</th>
-              <th className="border px-2 py-2">Deliver By</th>
-              <th className="border px-2 py-2">Update Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {groupedInvoiceArray.map((group) => {
-              const { invoice_id, user_name, contact_number, products } = group;
-              const {
-                street_name,
-                unit_number,
-                postal_code,
-                status,
-                delivery_date,
-                delivery_slot,
-              } = products[0];
+        </button>
+        <button
+          className={`px-4 py-2 text-sm font-medium ${
+            activeTab === "requests"
+              ? "text-indigo-600 border-b-2 border-indigo-600"
+              : "text-gray-500 hover:text-indigo-600"
+          }`}
+          onClick={() => setActiveTab("requests")}
+        >
+          Customer Request Details
+        </button>
+      </div>
+      <div className="mt-4">
+        {activeTab === "orders" && (
+          <div>
+            {showSysMsg && (
+              <div className="text-sm text-center text-green-500 mt-2">
+                Status updated successfully!
+              </div>
+            )}
+            {updateError && (
+              <div className="text-sm text-red-500 mb-4">Failed to update.</div>
+            )}
+            <div className=" bg-white shadow-md max-w-screen-lg rounded-lg container mx-auto mt-6 px-2 py-8 min-h-screen">
+              <h1 className="text-indigo-900 text-2xl font-bold mb-2">
+                Customer Order Details
+              </h1>
+              <table className="text-xs table-auto border-collapse border border-gray-300 w-full">
+                <thead className="text-indigo-900">
+                  <tr>
+                    <th className="border px-2 py-2">Invoice ID</th>
+                    <th className="border px-2 py-2 hidden md:table-cell">
+                      Name / Contact
+                    </th>
+                    <th className="border px-2 py-2 hidden lg:table-cell">
+                      Address
+                    </th>
+                    <th className="border px-2 py-2">Product Details</th>
+                    <th className="border px-2 py-2">Deliver By</th>
+                    <th className="border px-2 py-2">Update Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {groupedInvoiceArray.map((group) => {
+                    const { invoice_id, user_name, contact_number, products } =
+                      group;
+                    const {
+                      street_name,
+                      unit_number,
+                      postal_code,
+                      status,
+                      delivery_date,
+                      delivery_slot,
+                    } = products[0];
 
-              return (
-                <tr key={invoice_id}>
-                  <td className="border px-2 py-2">{invoice_id}</td>
-                  <td className="border px-2 py-2 hidden md:table-cell">
-                    <div className="font-bold text-blue-600">{user_name}</div>
-                    <div className="text-green-600">{contact_number}</div>
-                  </td>
-                  <td className="border px-2 py-2 hidden lg:table-cell">
-                    {street_name}, {unit_number}, {postal_code}
-                  </td>
-                  <td className="border px-2 py-2">
-                    {products.map((product, index) => (
-                      <div key={index} className="p-2 bg-gray-50 rounded mb-1">
-                        <div className="font-bold text-blue-600">
-                          {product.product_name}
-                        </div>
-                        <div className="text-gray-700">
-                          {`${product.selected_size}, ${product.selected_flavour}`}
-                        </div>
-                        <div className="text-green-600">
-                          Qty: {product.quantity}
-                        </div>
-                      </div>
-                    ))}
-                  </td>
+                    return (
+                      <tr key={invoice_id}>
+                        <td className="border px-2 py-2">{invoice_id}</td>
+                        <td className="border px-2 py-2 hidden md:table-cell">
+                          <div className="font-bold text-blue-600">
+                            {user_name}
+                          </div>
+                          <div className="text-green-600">{contact_number}</div>
+                        </td>
+                        <td className="border px-2 py-2 hidden lg:table-cell">
+                          {street_name}, {unit_number}, {postal_code}
+                        </td>
+                        <td className="border px-2 py-2">
+                          {products.map((product, index) => (
+                            <div
+                              key={index}
+                              className="p-2 bg-gray-50 rounded mb-1"
+                            >
+                              <div className="font-bold text-blue-600">
+                                {product.product_name}
+                              </div>
+                              <div className="text-gray-700">
+                                {`${product.selected_size}, ${product.selected_flavour}`}
+                              </div>
+                              <div className="text-green-600">
+                                Qty: {product.quantity}
+                              </div>
+                            </div>
+                          ))}
+                        </td>
 
-                  <td className="border px-2 py-2">
-                    {new Date(delivery_date).toLocaleDateString("en-US", {
-                      timeZone: "Asia/Singapore",
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                    <p>{delivery_slot}</p>
-                  </td>
-                  <td className="border px-2 py-2">
-                    <select
-                      value={status}
-                      onChange={(e) => handleUpdate(invoice_id, e.target.value)}
-                      className="p-1 border rounded-md"
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Processing">Processing</option>
-                      <option value="Out for delivery">Out for delivery</option>
-                      <option value="Delivered">Delivered</option>
-                      <option value="Cancelled">Cancelled</option>
-                    </select>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                        <td className="border px-2 py-2">
+                          {new Date(delivery_date).toLocaleDateString("en-US", {
+                            timeZone: "Asia/Singapore",
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                          <p>{delivery_slot}</p>
+                        </td>
+                        <td className="border px-2 py-2">
+                          <select
+                            value={status}
+                            onChange={(e) =>
+                              handleUpdate(invoice_id, e.target.value)
+                            }
+                            className="p-1 border rounded-md"
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Out for delivery">
+                              Out for delivery
+                            </option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                          </select>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "requests" && <AdminPageRequests />}
       </div>
     </div>
   );
