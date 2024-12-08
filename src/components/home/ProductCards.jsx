@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { addToCart } from "../../api/api";
+import { useUserContext } from "../../context/UserContext";
+
 const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedFlavour, setSelectedFlavour] = useState("");
   const [showSysMsg, setShowSysMsg] = useState(false);
+  const [message, setMessage] = useState("");
+  const { user } = useUserContext();
 
   const {
     mutate,
@@ -21,8 +25,12 @@ const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
   });
 
   const handleAddToCart = () => {
+    if (!user) {
+      setMessage("Login to add to cart");
+      return;
+    }
     if (!selectedSize || !selectedFlavour) {
-      alert("Please select a size and flavour!");
+      setMessage("Please select a size and flavour!");
       return;
     }
 
@@ -35,9 +43,10 @@ const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
       quantity: 1, // default quantity
       price: selectedPrice,
     };
+    setMessage("");
     mutate(cartItem, {
       onError: (addError) => {
-        alert(`Failed to add to cart: ${addError.message}`);
+        setMessage(`Failed to add to cart: ${addError.message}`);
       },
     });
   };
@@ -58,12 +67,12 @@ const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
           <p className="text-gray-600 mb-4">{description}</p>
 
           {/* Size Dropdown */}
-          <label htmlFor={`size-${id}`} className="block font-medium mb-2">
+          <label htmlFor={`size-${id}`} className="block font-medium mb-1">
             Select Size:
           </label>
           <select
             id={`size-${id}`}
-            className="border rounded p-2 w-full mb-4"
+            className="border rounded p-2 w-full mb-3"
             value={selectedSize}
             onChange={(e) => setSelectedSize(e.target.value)}
           >
@@ -76,12 +85,12 @@ const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
           </select>
 
           {/* Flavour Dropdown */}
-          <label htmlFor={`flavour-${id}`} className="block font-medium mb-2">
+          <label htmlFor={`flavour-${id}`} className="block font-medium mb-1">
             Select Flavour:
           </label>
           <select
             id={`flavour-${id}`}
-            className="border rounded p-2 w-full mb-4"
+            className="border rounded p-2 w-full mb-3"
             value={selectedFlavour}
             onChange={(e) => setSelectedFlavour(e.target.value)}
           >
@@ -93,16 +102,16 @@ const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
             ))}
           </select>
         </div>
-        {isUpdating && <p>adding to cart...</p>}
-        {showSysMsg && (
-          <div className="text-sm text-green-500 mb-4">
-            Item added successfully!
-          </div>
-        )}
-        {isError && <div className="text-sm text-red-500 mb-4">error</div>}
-        {addError && (
-          <div className="text-sm text-red-500 mb-4">{addError.message}</div>
-        )}
+        <div className="h-6">
+          {isUpdating && (
+            <p className="text-sm text-gray-500">Adding to cart...</p>
+          )}
+          {isError && <p className="text-sm text-red-500">error</p>}
+          {showSysMsg && (
+            <p className="text-sm text-green-500">Item added successfully!</p>
+          )}
+          {message && <p className="text-sm text-red-500">{message}</p>}
+        </div>
 
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-4"

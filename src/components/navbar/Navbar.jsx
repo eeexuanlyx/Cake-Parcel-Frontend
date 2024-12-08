@@ -25,24 +25,52 @@ const Navbar = () => {
         </button>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Link to="/about">About Us</Link>
-          <Link to="/request">Request A Cake</Link>
+          <Link to="/about" className="text-gray-800 hover:text-indigo-700">
+            About Us
+          </Link>
+          <Link to="/request" className="text-gray-800 hover:text-indigo-700">
+            Request A Cake
+          </Link>
 
           {user ? (
             <>
-              {user.role === "admin" && <Link to="/admin">Admin Page</Link>}
-              <Link to="/cart">Cart</Link>
-              <Link to="/orders">My Orders</Link>
-              <Link to="/profile">Profile</Link>
+              {user.role === "admin" && (
+                <Link
+                  to="/admin"
+                  className="text-gray-800 hover:text-indigo-700"
+                >
+                  Admin Panel
+                </Link>
+              )}
+              <Link to="/cart" className="text-gray-800 hover:text-indigo-700">
+                Cart
+              </Link>
+              <Link
+                to="/orders"
+                className="text-gray-800 hover:text-indigo-700"
+              >
+                My Orders
+              </Link>
+              <Link
+                to="/profile"
+                className="text-gray-800 hover:text-indigo-700"
+              >
+                Profile
+              </Link>
               <button
                 onClick={logout}
-                className="bg-red-500 text-white px-4 py-2 rounded"
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
               >
                 Logout
               </button>
             </>
           ) : (
-            <Link to="/login">Login</Link>
+            <Link
+              to="/login"
+              className="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Login
+            </Link>
           )}
         </div>
 
