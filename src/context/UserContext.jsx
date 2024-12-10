@@ -34,7 +34,7 @@ export const UserProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        const decodedToken = jwtDecode(token);
         if (decodedToken && decodedToken.user) {
           setUser(decodedToken.user);
         } else {
@@ -87,15 +87,8 @@ export const UserProvider = ({ children }) => {
     console.log("User has changed:", user);
   }, [user]);
 
-  const contextValue = React.useMemo(
-    () => ({ user, setUser, logout, userId }),
-    [user, userId]
-  );
-
   return (
-    <UserContext.Provider
-      value={{ user, setUser, logout, userId, contextValue }}
-    >
+    <UserContext.Provider value={{ user, setUser, logout, userId }}>
       {children}
     </UserContext.Provider>
   );
