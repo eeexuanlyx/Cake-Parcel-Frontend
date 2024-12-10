@@ -20,14 +20,16 @@ const Login = () => {
   } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      localStorage.setItem("token", data.token);
+      const { user, accessToken, refreshToken } = data;
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
       setUser({
         id: data.user.id,
         name: data.user.name,
         email: data.user.email,
-        role: data.user.role, // Store user role
+        role: data.user.role,
       });
-      console.log(data.user.role);
       setErrorMessage("");
       navigate("/");
     },

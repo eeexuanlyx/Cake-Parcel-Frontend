@@ -4,6 +4,11 @@ import { useUserContext } from "../context/UserContext";
 
 const ProtectedRoute = ({ children, roleRequired }) => {
   const { user } = useUserContext();
+  const token = localStorage.getItem("token");
+
+  if (!user && token) {
+    return <p>Loading...</p>;
+  }
 
   if (!user) return <Navigate to="/login" replace />;
 
