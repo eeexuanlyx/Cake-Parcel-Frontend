@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { registerUser } from "../../api/api";
-import { useUserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import Login from "./LoginPage";
+import useUserContext from "../../context/useUserContext";
 
 const Register = () => {
   const [inputs, setInputs] = useState({

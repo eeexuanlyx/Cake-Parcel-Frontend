@@ -8,7 +8,6 @@ import AboutPage from "./components/Pages/AboutPage";
 import AdminPage from "./components/pages/AdminPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import CartPage from "./components/pages/CartPage";
-import { UserProvider } from "./context/UserContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MyOrders from "./components/pages/MyOrders";
 import RequestForm from "./components/Utilis/RequestForm";
@@ -16,6 +15,7 @@ import NotFoundPage from "./components/pages/NotFoundPage";
 import CheckoutSuccess from "./components/pages/CheckoutSuccess";
 import CheckoutFail from "./components/pages/CheckoutFail";
 import TokenRefreshHandler from "./components/Utilis/TokenRefreshHandler";
+import UserProvider from "./context/UserProvider";
 
 const queryClient = new QueryClient();
 

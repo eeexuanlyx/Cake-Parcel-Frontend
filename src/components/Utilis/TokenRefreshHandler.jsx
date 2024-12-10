@@ -1,8 +1,8 @@
-import { useUserContext } from "../../context/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { refreshAccessToken } from "../../api/api";
 import { useEffect } from "react";
+import useUserContext from "../../context/useUserContext";
 
 const TokenRefreshHandler = () => {
   const { user, setUser } = useUserContext();

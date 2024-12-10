@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAddressContact, updateAddressContact } from "../../api/api";
-import { useUserContext } from "../../context/UserContext";
 import ProfilePage from "./ProfilePage";
+import useUserContext from "../../context/useUserContext";
 
 const Address = (props) => {
   const { user } = useUserContext();

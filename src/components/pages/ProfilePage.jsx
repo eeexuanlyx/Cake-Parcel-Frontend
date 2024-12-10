@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getUserProfile, updateProfile } from "../../api/api";
-import { useUserContext } from "../../context/UserContext";
 import Address from "./Address";
+import useUserContext from "../../context/useUserContext";
 
 const ProfilePage = () => {
   const { user } = useUserContext();

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useUserContext } from "../../context/UserContext";
+import { Link, useNavigate } from "react-router-dom";
+import useUserContext from "../../context/useUserContext";
 
 const Navbar = () => {
   const { user, setUser } = useUserContext() || {};
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const logout = () => {
     localStorage.removeItem("token");

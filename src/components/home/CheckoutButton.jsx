@@ -1,7 +1,7 @@
 import React from "react";
-import { useUserContext } from "../../context/UserContext";
 import { formatISO } from "date-fns";
 import { useState } from "react";
+import useUserContext from "../../context/useUserContext";
 
 const CheckoutButton = ({ cartItems }) => {
   const [deliveryDate, setDeliveryDate] = useState(() => {

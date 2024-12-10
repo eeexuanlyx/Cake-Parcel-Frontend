@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../api/api";
-import { useUserContext } from "../../context/UserContext";
 import Register from "./Register";
+import useUserContext from "../../context/useUserContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

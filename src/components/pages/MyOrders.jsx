@@ -1,7 +1,7 @@
 import React from "react";
 import { getMyOrders } from "../../api/api";
 import { useQuery } from "@tanstack/react-query";
-import { useUserContext } from "../../context/UserContext";
+import useUserContext from "../../context/useUserContext";
 
 const MyOrders = () => {
   const { user } = useUserContext();

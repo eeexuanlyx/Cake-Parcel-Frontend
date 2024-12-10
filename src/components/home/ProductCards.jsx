@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { addToCart } from "../../api/api";
-import { useUserContext } from "../../context/UserContext";
+import useUserContext from "../../context/useUserContext";
 
 const ProductCards = ({ id, name, description, sizes, img, flavours }) => {
   const [selectedSize, setSelectedSize] = useState("");
