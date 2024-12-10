@@ -112,7 +112,6 @@ export const refreshAccessToken = async () => {
       const { accessToken } = response.data;
 
       localStorage.setItem("token", accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
 
       return accessToken;
     } else {
@@ -203,6 +202,7 @@ export const addToCart = async (cartItem) => {
 
 export const getCartItems = async () => {
   try {
+    // checkAccess
     const response = await apiInstance.get("/cart");
     return response.data;
   } catch (error) {

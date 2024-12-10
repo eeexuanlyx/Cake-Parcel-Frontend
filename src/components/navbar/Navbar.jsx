@@ -3,8 +3,15 @@ import { Link } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
 
 const Navbar = () => {
-  const { user, logout } = useUserContext() || {};
+  const { user, setUser } = useUserContext() || {};
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    setUser(null);
+    navigate("/");
+  };
 
   return (
     <nav className="bg-white shadow-md">

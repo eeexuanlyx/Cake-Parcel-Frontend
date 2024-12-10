@@ -15,6 +15,7 @@ import RequestForm from "./components/Utilis/RequestForm";
 import NotFoundPage from "./components/pages/NotFoundPage";
 import CheckoutSuccess from "./components/pages/CheckoutSuccess";
 import CheckoutFail from "./components/pages/CheckoutFail";
+import TokenRefreshHandler from "./components/Utilis/TokenRefreshHandler";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <UserProvider>
+          <TokenRefreshHandler />
           <Navbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
