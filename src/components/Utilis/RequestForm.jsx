@@ -88,15 +88,20 @@ const RequestForm = () => {
       <p className="text-gray-700 font-corinthia text-3xl mb-2">
         Customize Your Cake!
       </p>
+      <p>
+        Fill in the form below to submit a customization request. We will
+        respond to your inquiry within 3 working days.
+      </p>
       <p className="mb-4">
-        Fill in the form below to submit a request for customization. We will
-        get back to you in 3 working days.
+        To ensure timely processing and delivery, we recommend submitting your
+        requests at least 7 days in advance, and 2-3 weeks in advance for more
+        intricate designs.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <label
           htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-indigo-900"
         >
           Title:
         </label>
@@ -111,7 +116,7 @@ const RequestForm = () => {
         />
         <label
           htmlFor="description"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-indigo-900"
         >
           Describe your ideas:
         </label>
@@ -125,7 +130,7 @@ const RequestForm = () => {
         />
         <label
           htmlFor="image"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-indigo-900"
         >
           Upload an Image:
         </label>
@@ -136,6 +141,10 @@ const RequestForm = () => {
           onChange={handleImageChange}
           className="border p-2 w-full"
         />
+        <p className="italic text-stone-600">
+          Note: This form is for non-urgent orders only. For urgent requests,
+          please contact us directly at +65 xxxx xxxx.
+        </p>
         <button type="submit" className="bg-blue-500 text-white p-2 rounded">
           Submit
         </button>
