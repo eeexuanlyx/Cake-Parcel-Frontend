@@ -52,7 +52,6 @@ const RequestForm = () => {
       const response = await apiInstance.post("api/form", data);
 
       setMessage("Form submitted successfully!");
-      console.log(response.data);
     } catch (error) {
       setMessage("Failed to submit form.");
       console.error(error);

@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import { viewRequests } from "../../api/api";
 
 const AdminPageRequests = () => {
-  const queryClient = useQueryClient();
-
   const {
     data: requests = [],
     isLoading,

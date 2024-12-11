@@ -152,6 +152,11 @@ const Cart = () => {
                       Failed to remove.
                     </div>
                   )}
+                  {updateError && (
+                    <div className="text-xs text-red-500 mt-1">
+                      Failed to update.
+                    </div>
+                  )}
                   <div className="font-bold text-base sm:text-base">
                     ${item.price}
                   </div>

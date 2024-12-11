@@ -4,20 +4,19 @@ import { useState } from "react";
 import useUserContext from "../../context/useUserContext";
 
 const CheckoutButton = ({ cartItems }) => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = formatISO(tomorrow, { representation: "date" });
+
   const [deliveryDate, setDeliveryDate] = useState(() => {
-    // Default to tomorrow's date
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
     return formatISO(tomorrow, { representation: "date" });
   });
+
   const [deliverySlot, setDeliverySlot] = useState("");
   const { userId } = useUserContext();
 
   const handleClick = async () => {
     try {
-      console.log("Sending cart items:", cartItems);
-      console.log("Sending metadata:", { userId, deliveryDate, deliverySlot });
-
       const response = await fetch(
         `${
           import.meta.env.VITE_EXPRESS_BACKEND_URL
@@ -46,7 +45,6 @@ const CheckoutButton = ({ cartItems }) => {
       }
 
       const { url } = await response.json();
-      console.log("Redirecting to Stripe:", url);
       window.location.href = url;
     } catch (error) {
       console.error("Error initiating checkout:", error);
@@ -63,7 +61,7 @@ const CheckoutButton = ({ cartItems }) => {
           value={deliveryDate}
           onChange={(e) => setDeliveryDate(e.target.value)}
           className="border rounded px-2 py-1 mt-2"
-          min={formatISO(new Date(), { representation: "date" })}
+          min={minDate}
         />
       </label>
       <label className="block text-gray-700 font-bold mt-4">

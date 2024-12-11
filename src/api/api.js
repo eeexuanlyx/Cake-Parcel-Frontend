@@ -98,7 +98,6 @@ export const loginUser = async (loginData) => {
 
 export const refreshAccessToken = async () => {
   try {
-    console.log("Attempting to refresh");
     const refreshToken = localStorage.getItem("refreshToken");
     if (!refreshToken) {
       throw new Error("Refresh token not found");
