@@ -40,7 +40,7 @@ const AdminPageRequests = () => {
                 {request.image_url ? (
                   <img
                     src={request.image_url}
-                    alt="Request"
+                    alt={request.title}
                     className="w-16 h-16 object-cover rounded-md"
                   />
                 ) : (

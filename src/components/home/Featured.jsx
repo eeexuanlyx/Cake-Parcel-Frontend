@@ -5,7 +5,11 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 
 const Featured = () => {
-  const images = ["/pawpatrol.jpg", "/stella.JPG", "/xmascupcakes.png"];
+  const images = [
+    { url: "/pawpatrol.jpg", altText: "Paw Patrol" },
+    { url: "/stella.JPG", altText: "Stella" },
+    { url: "/xmascupcakes.png", altText: "Christmas Cupcakes" },
+  ];
   return (
     <>
       <Swiper
@@ -24,7 +28,8 @@ const Featured = () => {
           <SwiperSlide key={index}>
             <div
               className="w-full h-full bg-cover bg-center transition-opacity hover:opacity-90"
-              style={{ backgroundImage: `url(${img})` }}
+              style={{ backgroundImage: `url(${img.url})` }}
+              aria-label={img.altText}
             >
               <div className="absolute bottom-8 w-full text-center px-4">
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-amber-50 drop-shadow-lg mb-4 font-cookie">
