@@ -6,6 +6,8 @@
 
 Cake Parcel is an online cake delivery platform that enables users to easily place cake orders for any occasion, with options for customization to suit their celebration needs. Built using the PERN stack (PostgreSQL, Express.js, React, Node.js), this application provides a seamless and intuitive experience for browsing, ordering, and personalizing cakes for birthdays, weddings, and other special events.
 
+The link to the backend repository can be found here: [Cake-Parcel-Backend](https://github.com/eeexuanlyx/Cake-Parcel-backend)
+
 ## Screenshots
 
 ### Home Page - Search Products
