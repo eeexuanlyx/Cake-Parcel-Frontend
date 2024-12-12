@@ -8,6 +8,16 @@ Cake Parcel is an online cake delivery platform that enables users to easily pla
 
 The link to the backend repository can be found here: [Cake-Parcel-Backend](https://github.com/eeexuanlyx/Cake-Parcel-backend)
 
+## Table of Contents
+
+- [Screenshots](#screenshots)
+- [Technologies Used](#technologies-used)
+- [ERD & Planning Materials](#erd--planning-materials)
+- [Getting Started](#getting-started)
+- [Running The Application](#running-the-application)
+- [Future Enhancements](#future-enhancements)
+- [Attributions](#attributions)
+
 ## Screenshots
 
 ### Home Page - Search Products
@@ -23,7 +33,7 @@ Users can update their account settings(email, password) and their address/conta
 ### Requests Page
 
 ![Requests Page](public/screenshots/requests-page.png)
-On the Requests page, users can submit a customization form to provide detailed descriptions of how they would like their cake to be made. Users may also upload a reference image to better convey their vision, ensuring their order is tailored to their preferences.
+On the Requests page, users can submit a customization form to provide detailed descriptions of how they would like their cake to be made. Users may also upload a reference image to better convey their ideas, ensuring their order is tailored to their preferences.
 
 ### Cart Page
 
