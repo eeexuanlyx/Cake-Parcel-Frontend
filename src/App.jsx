@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar/Navbar";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import HomePage from "./components/pages/HomePage";
-import LoginPage from "./components/Pages/LoginPage";
+import LoginPage from "./components/pages/LoginPage";
 import AboutPage from "./components/Pages/AboutPage";
 import AdminPage from "./components/pages/AdminPage";
 import ProfilePage from "./components/pages/ProfilePage";

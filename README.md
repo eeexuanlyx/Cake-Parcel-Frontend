@@ -102,7 +102,7 @@ In this database schema, the relationships between entities are structured to ef
 
 - An invoice can include multiple products, creating a one-to-many relationship with the invoice_products table.
 
-- Order details are consolidated by joining users, invoices, invoice_products, and products, enabling admins to review transactions in the admin panel.
+- Order details are consolidated by joining users, user_data, invoices, invoice_products, and products, enabling admins to review transactions in the admin panel.
 
 - Customer inquiries are managed via the user_requests table, linked to users, for streamlined follow-ups.
 
