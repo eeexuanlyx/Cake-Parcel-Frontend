@@ -13,7 +13,7 @@ const CheckoutButton = ({ cartItems }) => {
   });
 
   const [deliverySlot, setDeliverySlot] = useState("");
-  const { userId } = useUserContext();
+  const { user } = useUserContext();
 
   const handleClick = async () => {
     try {
@@ -29,7 +29,7 @@ const CheckoutButton = ({ cartItems }) => {
           body: JSON.stringify({
             cartItems,
             metadata: {
-              userId,
+              userId: user?.id,
               deliveryDate,
               deliverySlot,
             },
